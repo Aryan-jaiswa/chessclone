@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#111] text-white">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baap Level Chess</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .chessboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 100%;
+            height: 100%;
+            border: 4px solid #333;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            font-family: 'Noto Sans Symbols', 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            line-height: 1;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        .square.light {
+            background-color: #eeeed2;
+        }
+
+        .square.dark {
+            background-color: #769656;
+        }
+
+        .piece {
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-2%);
+        }
+
+        .piece.white {
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .piece.black {
+            color: #000;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        .last-move {
+            background-color: #f4f473 !important;
+            transition: background 0.2s ease;
+        }
+
+        .flipped {
+            transform: rotate(180deg);
+        }
+
+        .flipped .square {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="w-full min-h-screen flex flex-col items-center justify-center bg-[#111] p-4">
+
+    <!-- Top Timer -->
+    <div class="text-center font-semibold text-lg mb-4" id="black-timer">05:00</div>
+
+    <div class="flex flex-col md:flex-row items-start justify-center gap-8 w-full max-w-[1100px]">
+
+        <!-- Board Container -->
+        <div class="relative w-full max-w-[90vmin] aspect-square">
+            <div class="chessboard" id="board"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="flex flex-col gap-3 w-[260px]">
+
+            <!-- Move History -->
+            <div class="bg-zinc-800 rounded-md p-3 text-sm h-[320px] overflow-y-auto" id="move-history">
+                <h2 class="font-bold text-white mb-2">📜 Move History</h2>
+            </div>
+
+            <!-- Chat Input -->
+            <input type="text" id="chat-input" placeholder="Message..."
+                class="p-2 bg-zinc-700 text-white rounded-md outline-none" />
+
+        </div>
+    </div>
+
+    <!-- Bottom Timer -->
+    <div class="text-center font-semibold text-lg mt-4" id="white-timer">05:00</div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-4 mt-4">
+        <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white">Resign</button>
+        <button class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded text-black">Rematch</button>
+        <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white">Draw</button>
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous">
+        </script>
+
+    <!-- Chess.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+        integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Game Logic -->
+    <script src="/js/chessgame.js"></script>
+</body>
+
+</html>
